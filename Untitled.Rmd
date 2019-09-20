@@ -1,0 +1,17 @@
+---
+title: "Untitled"
+author: "Kim Evarista"
+date: "19/09/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+```{r}
+#Kim Evarista
+#Fav color = Blue 
+```
+
