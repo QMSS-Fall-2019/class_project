@@ -1,3 +1,0 @@
-#Julia Tache
-
-#Tiffany Blue
