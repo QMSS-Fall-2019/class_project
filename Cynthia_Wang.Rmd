@@ -1,0 +1,13 @@
+---
+title: "Cynthia_Wang"
+author: "Cynthia Wang"
+date: "9/19/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Cynthia Wang
+Favorite Color: white
