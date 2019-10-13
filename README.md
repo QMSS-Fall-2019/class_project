@@ -1,2 +1,2 @@
 # class_project
-Class project for Practicum in Large Scale Data
+Class project and assignments for Practicum in Large Scale Data
