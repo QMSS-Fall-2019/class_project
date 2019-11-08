@@ -1,10 +1,9 @@
-# class_project
 
 Probably the easiest way to share info with the class is to use the README file. You can add the progress your groups have been doing and upload the corresponding notebooks.
 
-## Core team
+# Core team
 
-We're going to use this document to briefly explain what we've been working so far.
+We're going to use this document to briefly explain what we've been working so far, and will be uploading the corresponding notebooks soon.
 
 There are several tasks we've been working on. (Other core team members, please add things you've also been working on) 
 
