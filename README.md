@@ -33,3 +33,7 @@ Once the clustering is done we're using the same two approaches:
 ### 2. Summarization
 
 ### 3. Dashboard
+
+# Group 1 names
+
+# Group 2 names
