@@ -13,8 +13,6 @@ CFPB <- read.csv("Consumer_Complaints.csv")
 library(lubridate)
 CFPB$Date.received <- mdy(CFPB$Date.received)
 
-View(CFPB$Date.received)
-
 ui <- fluidPage(    
   tags$style(type="text/css",
              ".shiny-output-error { visibility: hidden; }",
@@ -47,7 +45,9 @@ ui <- fluidPage(
       
       hr(),
       
-      helpText("Data from CFPB.")
+      helpText("Data from CFPB."),
+      
+      width = 4
     ), 
     
     # Create a spot for the barplot
@@ -100,8 +100,7 @@ server <- shinyServer(function(input, output) {
       xlab("Date of Complaint") + 
       ylab("Urgency Level") +
       scale_y_continuous(labels=function(label) sprintf('%15.2f', label))
-    # scale_x_continuous(labels=function(label) sprintf('%15.2f', label))
-    
+
   })
 })
 
