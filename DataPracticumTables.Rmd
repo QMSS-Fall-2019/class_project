@@ -1,0 +1,94 @@
+---
+title: "FrequencyNADataPracticum"
+author: "Kim Evarista"
+date: "14/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(readr)
+setwd("~/Desktop")
+consumer <- read_csv("Consumer_Complaints.csv")
+```
+
+
+```{r}
+#counting the number of Nas by issue - what's most/least frequent 
+library(dplyr)
+sum(is.na(consumer$Issue) == TRUE)
+
+most_freq_na_narrative_desc <- consumer %>% 
+  group_by(Issue) %>%
+  filter(is.na(`Consumer complaint narrative`) == TRUE) %>%
+  tally() %>%
+  arrange(desc(n))
+
+top_10 <- most_freq_na_narrative_desc[1:10,]
+top_10
+
+most_freq_na_narrative_asc <- consumer %>% 
+  group_by(Issue) %>%
+  filter(is.na(`Consumer complaint narrative`) == TRUE) %>%
+  tally() %>%
+  arrange(n)
+most_freq_na_narrative_asc[1:10,]
+
+join_table <- consumer %>% 
+  group_by(Issue) %>%
+  filter(is.na(`Consumer complaint narrative`) == FALSE) %>%
+  tally() %>% 
+  rename(Narratives = n)
+trying <- left_join(most_freq_na_narrative_desc, join_table, by = "Issue")
+```
+
+```{r}
+#most reported products - mortgage, credit reporting + , debt collection, credit reporting 
+product <- consumer %>% 
+  group_by(Product) %>%
+  tally() %>%
+  arrange(desc(n))
+product
+```
+
+```{r}
+library(janeaustenr)
+library(stringr)
+library(tidyr)
+library(ggplot2)
+
+consumer_filtered <- consumer %>% 
+  select(Product, `Consumer complaint narrative`) %>% 
+  filter(Product %in% c('Mortgage', 'Credit reporting, credit repair services, or other personal consumer reports', 'Debt collection') & is.na(`Consumer complaint narrative`) == FALSE) %>%
+  mutate(linenumber = row_number())
+  
+consumer_filtered$Product[consumer_filtered$Product == 'Credit reporting, credit repair services, or other personal consumer reports'] <- "Credit Reporting"
+
+consumer_filtered$`Consumer complaint narrative` <- str_replace_all(consumer_filtered$`Consumer complaint narrative`, pattern = "X+", "")
+
+tidy_consumer <- consumer_filtered %>% 
+  unnest_tokens(word, `Consumer complaint narrative`)
+
+#nrc_neg <- get_sentiments("nrc") %>% 
+  filter(sentiment %in% c("negative", "anger", "disgust", "sadness")) # extract negative words as determined by the nrc group
+
+#nrc_pos <- get_sentiments("nrc") %>% 
+  filter(sentiment %in% c("positive", "trust")) # extract positive words as determined by the nrc group
+
+product_sentiment <- tidy_consumer %>% 
+  inner_join(get_sentiments("nrc")) %>%
+  count(Product, index = linenumber %/% 80, sentiment) %>% 
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = (joy + positive + surprise + trust) - (anger + negative + disgust + fear + sadness))
+
+ggplot(product_sentiment, aes(index, sentiment, fill = Product)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~Product, ncol = 2, scales = "free_x")
+```
+
+
+
